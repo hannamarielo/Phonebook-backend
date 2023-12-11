@@ -63,10 +63,16 @@ const generateId = () => {
 
 app.post('/api/persons', (req, res) => {
   const body = req.body
+  const nameExists= persons.find((person) => person.name.toLowerCase() === body.name.toLowerCase())
 
   if (!body.name || !body.number) {
     return res.status(400).json({ 
       error: 'invalid name or number' 
+    })
+
+  } if (nameExists) {
+    return res.status(400).json({ 
+      error: 'name must be unique' 
     })
   }
 
